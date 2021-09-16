@@ -8,9 +8,13 @@
     $result = mysqli_query($con,$query);
 
 ?>
-
+ 
 <div class="container">
-          <h1 class="text-center">Registered Schools</h1>
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <h1 class="h3 mb-0 text-primary">Registered Schools</h1>
+                        <a href="registersch.php" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                                class="fas fa-plus fa-sm text-white-50"></i> Add School</a>
+                    </div>
             <div class="row">
                 <div class="col m-auto card-body">
                     <div class="card mt-5 table-responsive">
@@ -69,7 +73,5 @@
                     </div>
                 </div>
             </div>
-        </div>
-        
-            
+        </div>    
 <?php include 'footer.php'; ?>

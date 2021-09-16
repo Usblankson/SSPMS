@@ -1,4 +1,14 @@
 
+<?php 
+
+require_once 'mysqli_connection.php'; 
+//include_once 'process.php';
+session_start(); 
+  //echo $email;
+
+ 
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 

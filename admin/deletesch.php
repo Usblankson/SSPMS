@@ -1,6 +1,6 @@
 <?php
 require_once("mysqli_connection.php");
-require_once("auth/login.php");
+// require_once("auth/login.php");
 if(isset($_GET['Del']))
          {
              $id = $_GET['Del'];

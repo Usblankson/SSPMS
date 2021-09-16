@@ -1,54 +1,18 @@
-<?php session_start(); ?>
+
 <?php include 'header.php'; ?>
 <?php include 'sidebar.php'; ?>
 <?php include 'topbar.php'; ?>
-<?php 
-   
-  $host = "localhost";
-  $user = "root";
-  $password = "";
-  $db = "sspms_db";
-
- // session_start();
-  $con = mysqli_connect($host, $user, $password, $db);
-  
-  if($con === false){
-      die("connection error");
-  }
-
-  if($_SERVER['REQUEST_METHOD'] == "POST"){
-      $email = $_POST["email"];
-      $password = $_POST["password"];
-
-      $sql = "SELECT * FROM users WHERE email='".$email."' AND password = '".$password."'";
-      $result =mysqli_query($con,$sql);
-
-      $row = mysqli_fetch_array($result);
-
-      if($row['userType'] == 1){
-        //$_SESSION['email'] = $email;
-        header("location: admin/dashboard/index.php"); 
-      }
-      elseif($row['userType'] == 0){
-        //$_SESSION['email'] = $email;
-        header("location: index.php"); 
-      }else{
-          echo "email or password incorrect"; 
-      }
-  }
+<?php    
+   include_once 'mysqli_connection.php'; 
 ?>
-
- 
-
-
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
-                        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                                class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
+                        <a href="viewsch.php" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                                class="fas fa-eye fa-sm text-white-50"></i> View Schools</a>
                     </div>
 
                     <!-- Content Row -->
@@ -62,7 +26,15 @@
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                                 Total Schools</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">400</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                            <?php 
+                                               $total ="SELECT *  From schools";
+                                               $result =mysqli_query($con,$total);
+                                               $num = mysqli_num_rows($result);
+                                               echo $num;
+
+                                            ?>    
+                                            </div>
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-university fa-2x text-gray-300"></i>
@@ -80,7 +52,13 @@
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                                 Federal Schools</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">240</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php 
+                                               $total ="SELECT * FROM schools WHERE funding ='Federal'";
+                                               $result =mysqli_query($con,$total);
+                                               $num = mysqli_num_rows($result);
+                                               echo $num;
+
+                                            ?></div>
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-university fa-2x text-gray-300"></i>
@@ -100,7 +78,13 @@
                                             </div>
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col-auto">
-                                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">120</div>
+                                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"><?php 
+                                               $total ="SELECT * FROM schools WHERE funding = 'State'";
+                                               $result =mysqli_query($con,$total);
+                                               $num = mysqli_num_rows($result);
+                                               echo $num;
+
+                                            ?></div>
                                                 </div>
                                                 <div class="col">
                                                     <!-- <div class="progress progress-sm mr-2"> -->
@@ -127,7 +111,13 @@
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
                                                 Private Schools</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">40</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php 
+                                               $total ="SELECT count(*) FROM schools WHERE funding = 'Private'";
+                                               $result =mysqli_query($con,$total);
+                                               $num = mysqli_num_rows($result);
+                                               echo $num;
+
+                                            ?></div>
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-university fa-2x text-gray-300"></i>
@@ -140,13 +130,13 @@
 
                     <!-- Content Row -->
 
-                    <div class="row">
+                    <!-- <div class="row">
 
                         <!-- Area Chart -->
-                        <div class="col-xl-8 col-lg-7">
+                        <!-- <div class="col-xl-8 col-lg-7">
                             <div class="card shadow mb-4">
                                 <!-- Card Header - Dropdown -->
-                                <div
+                                <!-- <div
                                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                                     <h6 class="m-0 font-weight-bold text-primary">Earnings Overview</h6>
                                     <div class="dropdown no-arrow">
@@ -163,21 +153,21 @@
                                             <a class="dropdown-item" href="#">Something else here</a>
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
                                 <!-- Card Body -->
-                                <div class="card-body">
+                                <!-- <div class="card-body">
                                     <div class="chart-area">
                                         <canvas id="myAreaChart"></canvas>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
+                            </div> -->
+                        </div>  
 
                         <!-- Pie Chart -->
-                        <div class="col-xl-4 col-lg-5">
+                        <!-- <div class="col-xl-4 col-lg-5">
                             <div class="card shadow mb-4">
                                 <!-- Card Header - Dropdown -->
-                                <div
+                                <!-- <div
                                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                                     <h6 class="m-0 font-weight-bold text-primary">Revenue Sources</h6>
                                     <div class="dropdown no-arrow">
@@ -194,9 +184,9 @@
                                             <a class="dropdown-item" href="#">Something else here</a>
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
                                 <!-- Card Body -->
-                                <div class="card-body">
+                                <!-- <div class="card-body">
                                     <div class="chart-pie pt-4 pb-2">
                                         <canvas id="myPieChart"></canvas>
                                     </div>
@@ -211,10 +201,10 @@
                                             <i class="fas fa-circle text-info"></i> Private
                                         </span>
                                     </div>
-                                </div>
-                            </div>
+                                </div>-->
+                            </div> 
                         </div>
-                    </div>
+                    </div>  
 
                     <!-- Content Row -->
                     <div class="row">
@@ -370,8 +360,8 @@
 
                 </div>
                 <!-- /.container-fluid -->
-
+ 
             </div>
             <!-- End of Main Content -->
-
+        
 <?php include 'footer.php'; ?>  

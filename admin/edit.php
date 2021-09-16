@@ -4,7 +4,7 @@
 <?php 
 
     require_once("mysqli_connection.php");
-    require_once("auth/login.php");
+    // require_once("auth/login.php");
     $id = $_GET['GetID'];
     $query = " select * from schools where id='".$id."'";
     $result = mysqli_query($con,$query);
@@ -22,6 +22,7 @@
         $logo = $row['logo'];
         $estYear =$row['estYear'];
         $abbr = $row['abbr'];
+        
     }
 
 ?>
@@ -35,12 +36,16 @@
                         </div>
                         <div class="card-body">
 
-                        <form action="update.php?ID=<?php echo $id ?>" method="post">
+                        <form action="update.php?ID=<?php echo $id ?>" method="post" enctype="multipart/form-data">
+                           
                             <div class="row">
-                            <!-- <img src="./assets/img/profile/unicross.jpg" style=" width: 200px; height: 200px;" class="img rounded" alt="School logo"> -->
-                              <div class="col my-4"><label for="">Upload School LOGO</label>
-                                <input type="file" class="form-control-file" placeholder="School Logo" name="schLogo" value="<?php echo $logo ?>" id="upload-profile">
-                              </div>
+                                <div class="col my-4"><label for="">Upload School LOGO</label><br><br>
+                                      <img src="schoollogos/<?php echo $logo; ?>" style="width: 150px; height: 150px;" alt=""><br><br>
+                                    <input type="file" class="form-control mb-2" placeholder=" School Email " name="logo"><br><br>
+                                </div>
+                                <div class="col-md-8">
+                                    
+                                </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-12">

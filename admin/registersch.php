@@ -19,19 +19,57 @@
         }
         else
         {
-            $name = $_POST['name'];
-            $email = $_POST['email'];
-            $address = $_POST['address'];
-            $loc = $_POST['location'];
-            $state = $_POST['state'];
-            $tel = $_POST['tel'];
-            $funding = $_POST['funding'];
-            $logo = $_POST['logo'];
-            $estYear = $_POST['estYear'];
-            $abbr = $_POST['abbr'];
 
-            $query = "INSERT into schools (logo,name,abbr,email,location,state,address,tel,funding,estYear) values('$logo','$name','$abbr','$email','$loc','$state','$address','$tel','$funding','$estYear')";
-            $result = mysqli_query($con,$query);
+            if (isset($_POST['submit'])) {
+                $fileName = $_FILES['logo']['name'];
+                $fileTmpNm = $_FILES['logo']['tmp_name'];
+                $fileSize = $_FILES['logo']['size'];
+                $fileExt = explode('.', $fileName);
+                $fileType = strtolower(end($fileExt));
+                $logoName = time()."_".strtolower($fileName);
+                $target = "schoollogos/".$fileName;
+                $allowed = ['png','jpeg','jpg',"jiff"];
+
+
+                $name = $_POST['name'];
+                $email = $_POST['email'];
+                $address = $_POST['address'];
+                $loc = $_POST['location'];
+                $state = $_POST['state'];
+                $tel = $_POST['tel'];
+                $funding = $_POST['funding'];
+                $estYear = $_POST['estYear'];
+                $abbr = $_POST['abbr'];
+                $image = $_FILES['logo'];
+            
+                if (!in_array($fileType, $allowed)) {
+                    $messsage = "<center><div id='msg' class='alert alert-danger' style='font-size: 11px;'><span style='color: red; font-weight: bold; font-size: 11px;;'>".$fileType."</span> Format is not allowed. Only
+                    <span style='color: red; font-weight: bold; font-size: 11px;;'>jpg</span>, <span style='color: red; font-weight: bold; font-size: 11px;;'>jpeg</span> or <span style='color: red; font-weight: bold; font-size: 11px;;'>png</span> is allowed </div></center>";
+                } elseif ($fileSize > 60000000) {
+                    $messsage = "<center><div id='msg' class='alert alert-danger' style='font-size: 11px;'> File size should not be more than Mb </div></center>";
+                } else {
+                    
+                    if (move_uploaded_file($fileTmpNm, $target)) {
+                        $query = "INSERT INTO schools (logo,name,abbr,email,location,state,address,tel,funding,estYear) VALUES('$fileName','$name','$abbr','$email','$loc','$state','$address','$tel','$funding','$estYear')";
+                        $result = mysqli_query($con,$query);
+
+                        if ($result) {
+                            $messsage = "<center><div id='' class='alert alert-success' style='font-size: 11px;'>Image Uploaded and Saved to Database <a href='index.php' style='font-size: 12px;'>Refresh</a></div></center>";
+                            
+                        } else {
+                            $messsage = "<center><div id='msg' class='alert alert-danger' style='font-size: 11px;'>Faild to Upload image to Database</div></center>";
+                        }
+                    }  else {
+                        $messsage = "<center><div id='msg' class='alert alert-danger' style='font-size: 11px;'>Faild to Upload</div></center>";
+                    }
+        
+                }
+            }
+
+
+            
+
+           
 
             // if($result)
             // {
@@ -64,13 +102,15 @@
                         </div>
                         <div class="card-body">
 
-                     <form action="registersch.php" method="post">
+                     <form action=" " method="post" enctype="multipart/form-data">
+                            
                             <div class="row">
-                            <!-- <img src="./assets/img/profile/unicross.jpg" style=" width: 200px; height: 200px;" class="img rounded" alt="School logo"> -->
-                              <div class="col my-4"><label for="">Upload School LOGO</label>
-                                <input type="file" class="form-control-file" placeholder="School Logo" name="logo" id="upload-profile">
-                              </div>
-                            </div>
+                                <div class="col-md-12">
+                                    <label for="name">Upload School Logo</label>
+                                  <input type="file" class="form-control-file mb-2" placeholder=" School Logo " name="logo">
+                                </div>
+                                <!-- <img src="./assets/img/profile/unicross.jpg" style=" width: 200px; height: 200px;" class="img rounded" alt="School logo"> -->
+                            </div><br>
                             <div class="row">
                                 <div class="col-md-12">
                                     <label for="name">School Name</label>
